@@ -2,10 +2,26 @@
 <html>
 <h1>Compte-rendu Projet Majeure</h1>
 <h2>Mise en place d'une Infrastructure Réseau</h2>
+<h3>Introduction</h3>
 <p>Le but de ce projet de mise en place d'Infrastructure Réseau est de mettre en oeuvre les différentes compétences acquises lors des différents modules efectués lors de ce semestre.
 Nous devions mettre en place une infrastructure réseau et logicielle pour les Hospices Civils de Lyon (HCL).</p>
 <p>L'infrastructure à mettre en place sous le logiciel GNS3 est la suivante :</p>	
 <img src="Reseau_Conf.png" alt="">
 <p>Voici le plan d'adressage que nous avons mis en place : </p>
 <img src="Plan_VLSM.png" alt="">
+<h3>Mise en place du projet</h3>
+<p>Pour ce projet, nous avons décidé de nous partager l'infrastructure réseau. En effet, Alexandre s'est occupé de mettre le Backbone ainsi que les routeurs connectés aux différents HCL et au Data Center.
+Axel de son côté s'est occupé de la création de la Machine Virtuelle servant de serveur et des autres VM clientes pour les HCL.</p>
+<p>Pour ce qui est de l'infrastructure réseau, nous avons utilisé les protocoles BGP et OSPF afin de pouvoir communiquer entre les différents sites et le Data Center. Nous avons également joué sur les priorités des 
+routes afin de pouvoir réaliser la liaison Active/Passive.</p>
+<h3>Choix des différents logiciels sur le serveur</h3>
+<p>Une fois que le serveur était installé correctement, nous avons commencé par créer le DHCP sur le serveur afin de pouvoir attribuer dynamiquement des adresses IP dans chaque site HCL. Mais avant cela, nous avons
+attribué une adresse IP fixe à notre serveur (164.4.1.1). Afin de mettre en place le DHCP, nous avons modifié le fichier dhcp.conf et déclaré les différents subnets afin que chaque site HCL ait une adresses IP. Il a 
+fallu également modifier le fichier isc-dhcp-server afin de pouvoir mettre le bon nom de l'interface utilisée que nous pouvons voir à l'aide de la commande ip a.</p>
+<!--Mettre les modifs façon code-->
+<p>DNS</p>
+<p>serveur web (HTTP et HTTPS)</p>
+<p>serveur de messagerie</p>
+<p>NAS avec Samba</p>
+<p></p>
 </html>
