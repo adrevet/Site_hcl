@@ -5,7 +5,6 @@
         <meta charset=" utf-8">
         <title>hcl.fr</title>
         <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
     </head>
 </html></head><body>
 <header>
@@ -17,6 +16,17 @@
                 </li>
                 <li>
                     <a href="#DescProjet">Description Projet</a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropbtn" href="#Choix">Choix logiciels</a>
+                    <div class="dropdown-content">
+                        <a href="#DNSid">DNS</a>
+                        <a href="#DHCPid">DHCP</a>
+                        <a href="#Webid">Web</a>
+                        <a href="#Mailid">Mail</a>
+                        <a href="#Sambaid">Samba</a>
+                        <a href="#NTPid">NTP</a>
+                    </div>
                 </li>
                 <li>
                     <a href="#Evolution">Propositions d'évolutions</a>
@@ -34,7 +44,7 @@
     <section class="Paragraphe" id="Introduction">
         <h3>Introduction</h3>
         <p>Le but de ce projet de mise en place d'Infrastructure Réseau est de mettre en oeuvre les différentes compétences acquises lors des différents modules efectués lors de ce semestre.
-          Nous devions mettre en place une infrastructure réseau et logicielle pour les Hospices Civils de Lyon (HCL).</p>
+              Nous devions mettre en place une infrastructure réseau et logicielle pour les Hospices Civils de Lyon (HCL).</p>
         <p>L'infrastructure à mettre en place sous le logiciel GNS3 est la suivante :</p>
         <img src="Reseau_Conf.png" alt="">
         <p>Voici le plan d'adressage que nous avons mis en place :
@@ -44,69 +54,167 @@
     <section class="Paragraphe" id="DescProjet">
         <h3>Mise en place du projet</h3>
         <p>Pour ce projet, nous avons décidé de nous partager l'infrastructure réseau. En effet, Alexandre s'est occupé de mettre en place le Backbone ainsi que les routeurs connectés aux différents HCL et au Data Center.
-        Axel de son côté s'est occupé de la création de la Machine Virtuelle servant de serveur et des autres VM clientes pour les HCL.</p>
+            Axel de son côté s'est occupé de la création de la Machine Virtuelle servant de serveur et des autres VM clientes pour les HCL.</p>
         <p>Pour ce qui est de l'infrastructure réseau, nous avons utilisé les protocoles BGP et OSPF afin de pouvoir communiquer entre les différents sites et le Data Center. Nous avons également joué sur les priorités des 
-        routes afin de pouvoir réaliser la liaison Active/Passive.</p>
+            routes afin de pouvoir réaliser la liaison Active/Passive.</p>
     </section>
-    <section class="Paragraphe">
+    <section class="Paragraphe" id="Choix">
         <h3>Choix des différents logiciels sur le serveur</h3>
-		<p>Pour l'installation du serveur, nous avons décidé d'installer un serveur Ubuntu et non un serveur Windows. En effet, durant l'année, nous avons déjà eu l'occasion d'installer et d'utiliser un serveur Windows et 
-		non un serveur Ubuntu. Nous avons donc vu une opportunité dans ce projet d'apprendre à installer et à configurer un serveur Ubuntu.</p>
+        <p>Pour l'installation du serveur, nous avons décidé d'installer un serveur Ubuntu et non un serveur Windows. En effet, durant l'année, nous avons déjà eu l'occasion d'installer et d'utiliser un serveur Windows et 
+            non un serveur Ubuntu. Nous avons donc vu une opportunité dans ce projet d'apprendre à installer et à configurer un serveur Ubuntu.</p>
+        <section id="DNSid" class="SousParagraphe">
+            <h4>Serveur DNS (Bind9)</h4>
+            <p>Pour la configuration du serveur DNS, nous avons décidé d'installer le serveur bind9. Tout d'abord, le DNS est un service TCP/IP permettant la correspondance entre un nom de domaine et une adresse IP. Nous
+                avons décidé d'installer le serveur bind9 car c'est ce que préconise la documentation Ubuntu. En effet, BIND qui est le programme le plus couramment utilisé pour maintenir un serveur de noms
+                sous Linux. Une fois bind9 installé, nous modifions plusieurs fichiers : le fichier named.conf.local où nous indiquons la base de donnée de résolution d'addresse et les subnets pouvant effectuer des requêtes, nous modifions le fichier named.conf.options pour encore une fois autoriser les subnets à faire des requêtes, puis nous créons et modifions le fichier db.hcl.fr où nous configurons les différentes adresses IP du serveur, du serveur mail et du
+                serveur web.</p>
+
+        </section>
+        <section id="DHCPid" class="SousParagraphe">
+            <h4>Serveur DHCP</h4>
+            <p>Dans ce projet, nous devions mettre également en place un serveur DHCP. Le protocole DHCP est un service réseau permettant aux ordinateurs hôtes de se voir attribuer automatiquement et dynamiquement des adresses
+                IP. Cela va nous servir à attribuer dynamiquement des adresses IP dans chaque site HCL où nous avons deux clients. De leur côté les ordinateurs configurés pour être ddes clients DHCP n'ont aucun contrôle sur les paramètres
+                qu'ils reçoivent du serveur DHCP. Avant de pouvoir configurer le DHCP, il faut que nous attribuons une adresse IP fixe à notre serveur (164.4.1.1). Pour mettre en place le serveur DHCP, nous avon smodifié le fichier dhcpd.conf
+                où nous avons déclaré les différents subnets (donc les différents sites HCL) afin que chaque client ait son adresse IP. Nous avons également modifié le fichier isc-dhcp-server afin de mettre le bon nom de l'interface utilisée.
+                Pour voir le nom de cette interface, nous entrons la commande ip a. Nous avons également configuré sur les serveurs des différents site un ip-helper pointant vers l'ip du serveur DNS afin de pouvoir faire la distribution d'ip dans les sites distants</p>
+        </section>
+        <section id="Webid" class="SousParagraphe">
+            <h4>Serveur Web (Apache2)</h4>
+            <p>Pour le serveur Web, nous avons décidé d'utiliser Apache. Apache est le service d'hébergement web le plus populaire. Le serveur Apache comme tous les autres serveurs web permet d'établir une connexion entre un 
+                serveur et les navugateurs des visiteurs du site web. Si nous installons que Apache, nous n'avons que le service HTTP. Pour avoir le service HTTPS donc sécurisé, il faut activer le module SSL et générer un certificat SSL
+                autosigné grâce à Openssl afin d'activer HTTPS. Il faut également créer la configuration du site puis nous activons le site afin qu'il soit accessible sur les différents clients.</p>
+        </section>
+        <section id="Mailid" class="SousParagraphe">
+            <h4>Serveur Mail (SMTP, IMAP, POP)</h4>
+            <p>Pour le serveur mail, nous avons décidé d'utiliser postfix comme serveur SMTP, mailutils pour tester l'envoi de mail sur le serveur et dovecot pour le serveur IMAP/POP. Nous avons choisi postfix car c'est le MTA
+                (Mail Transfert Agent) par défaut de Ubuntu. Pour l'installation de postfix, il y a de nombreuses étapes à suivre qui sont détaillées dans le fichier de configuration. Nous avons choisi d'utiliser mailutils pour tester
+                l'envoi de mail sur le serveur car cette solution permet de gérer les mails sous Ubuntu en permettant de consulter les mails locaux ou d'en envoyer depuis le terminal. Enfin, nous avons choisi l'application dovecot car 
+                c'est une application d'agent de distribution des courriels MDA et qui a comme préoccupation principale la sécurité. De plus dovecot est très simple à installer.</p>
+            <button class="collapsible">Tutoriel et codes</button>
+            <div class="content">
+                <h5>Installation et configuration de Postfix</h5>
+                <p>
+                    Postfix s'installe avec la commande
+                    <code>sudo apt install postfix</code>. Si lors de l'installation une fenêtre vous demande la configuration de postfix, effectuez la configuration imédiatement ou choisisser "No Configuration" pour y revenir plus tard. Dans le second cas, utilisez la commande
+                    <code>sudo dpkg-reconfigure postfix</code>
+                    pour relancer la configuration.
+                </p>
+                <p>
+                    Pour la configuration, choisir les paramètres suivant à chaque fenêtre respective :
+                    <code><br>
+                        Internet Site
+                        <br>
+                        hcl.fr
+                        <br>
+                        tp #remplacer par votre nom d'utilisateur
+                        <br>
+                        mail.hcl.fr, localhost.localdomain, localhost, hcl.fr
+                        <br>
+                        No<br>
+                        127.0.0.1/8 [::ffff:127.0.0.0]/104 [::1]/128 164.4.1.1/24	#164.4.1.1/24 remplacer par l'IP statique de votre serveur
+                        <br>
+                        0<br>
+                        +<br>
+                        all</code>
+                </p>
+                <p>
+                    Editer le fichier /etc/postfix/main.cf pour ajouter et modifiez les paramètres suivants :
+                    <code><br>
+                        mydomain = hcl.fr<br>
+                        mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 164.4.0.0/22<br>
+                        home_mailbox = Maildir/
+                    </code>
+                </p>
+                <p>
+                    Taper la commande :
+                    <br><code>mkdir -p /etc/skel/Maildir/{cur,new,tmp}</code>
+
+                </p>
+                <p>Ajouter finalement 2 utilisateurs :<br><code>
+                        useradd -m user1<br>
+                        passwd user1pwd<br>
+                        <br>
+                        useradd -m user2<br>
+                        passwd user2pwd<br></code>
+                </p>
+                <p>Redémarrez le service postfix :
+                    <br><code>
+                        service postfix restart</code>
+                </p>
+                <p>
+                    Testez le bon fonctionnement avec les commandes suivantes :
+                    <br><code>
+                        telnet localhost 25<br>
+                        ehlo localhost<br>
+                        ...<br>
+                        mail from:user1@hcl.fr<br>
+                        ...<br>
+                        rcpt to:user2@hcl.fr<br>
+                        ...<br>
+                        data<br>
+                        ...<br>
+                        écrivez ce que vous voulez ici, c'est le corps du message<br>
+                        Pour finir faire retour à la ligne, "." et retour à la ligne.<br>
+                        .<br>
+                        quit<br>
+                    </code>
+                    puis allez dans /home/user2/Maildir/new. Vous devriez trouver votre message.
+                </p>
+                <h5>Installation et configuration de Dovecot</h5>
+                <p>
+                    Dovecot s'installe avec la commande
+                    <code>sudo apt install dovecot-imapd dovecot-pop3d</code>.
+                </p>
+                <p>
+                    Modifiez /etc/dovecot/dovecot.conf et ajoutez :<br><code>
+                        protocols = pop3 imap<br>
+                        mail_location = maildir:~/Maildir</code>
+                </p>
+                <p>
+                    Redémarrer les service dovecot :
+                    <br><code>service dovecot restart</code>
+                </p>
+                <p>
+                    Testez le bon fonctionnement avec les commandes suivantes :<br><code>
+                        telnet localhost 110<br>
+                        ...<br>
+                        user user2<br>
+                        ...<br>
+                        pass user2pwd<br>
+                        ...<br>
+                        list<br>
+                        ... contenu du mail<br>
+                        quit</code>
+                </p>
+
+            </div>
+        </section>
+        <section id="Sambaid" class="SousParagraphe">
+            <h4>Serveur de fichier (Samba)</h4>
+            <p>Enfin, pour le serveur de fichier, nous avons décidé de configurer Samba en tant que serveur de fichiers. Samba est recommandé par la documaentation Ubuntu lors de l'installation de Ubuntu serveur. Le serveur de fichier
+                permet de mettre en réseau les différents ordinateurs clients des HCL. Cela permet le partage de fichiers.</p>
+        </section>
+        <section id="NTPid" class="SousParagraphe">
+            <h4 id="NTPid">Protocole NTP</h4>
+            <p>Nous avons décidé en fin de projet de mettre en place le protocole NTP afin de pouvoir synchroniser les horologes des différents systèmes informatiques. Le protocole NTP repose sur le protocole UDP et s'appuie sur le UTC
+                (Coordinated Universal Time). Le protocole NTP permet d'éviter de nombreux problèmes de connexion dans un réseau.</p>
+        </section>
     </section>
-    <section class="Paragraphe">
-        <h4>Serveur DNS (Bind9)</h4>
-		<p>Pour la configuration du serveur DNS, nous avons décidé d'installer le serveur bind9. Tout d'abord, le DNS est un service TCP/IP permettant la correspondance entre un nom de domaine et une adresse IP. Nous
-		avons décidé d'installer le serveur bind9 car c'est ce que préconise la documentation Ubuntu. En effet, Ubuntu est livré avec BIND qui est le programme le plus couramment utilisé pour maintenir un serveur de noms
-		sous Linux. Une fois bind9 installé, nous modifions plusieurs fichiers : le fichier resolv.conf.head où nous mettons les différents adresses IP des serveurs à atteindre (ATTENTION JE NE SUIS PAS SUR DE MOI), le fichier
-		named.conf.local où nous autorisons le transfert avec l'adresse IP de google (8.8.8.8), puis nous créons et modifions le fichier db.hcl.fr où nous configurons les différentes adresses IP du serveur, du serveur mail et du
-		serveur web.</p>
-    </section>
-    <section>
-        <h4>Serveur DHCP</h4>
-		<p>Dans ce projet, nous devions mettre également en place un serveur DHCP. Le protocole DHCP est un service réseau permettant aux ordinateurs hôtes de se voir attribuer automatiquement et dynamiquement des adresses
-		IP. Cela va nous servir à attribuer dynamiquement des adresses IP dans chaque site HCL où nous avons deux clients. De leur côté les ordinateurs configurés pour être ddes clients DHCP n'ont aucun contrôle sur les paramètres
-		qu'ils reçoivent du serveur DHCP. Avant de pouvoir configurer le DHCP, il faut que nous attribuons une adresse IP fixe à notre serveur (164.4.1.1). Pour mettre en place le serveur DHCP, nous avon smodifié le fichier dhcpd.conf
-		où nous avons déclaré les différents subnets (donc les différents sites HCL) afin que chaque client ait son adresse IP. Nous avons également modifié le fichier isc-dhcp-server afin de mettre le bon nom de l'interface utilisée.
-		Pour voir le nom de cette interface, nous entrons la commande ip a.</p>
-    </section>
-    <section>
-        <h4>Serveur Web (Apache2)</h4>
-		<p>Pour le serveur Web, nous avons décidé d'utiliser Apache. Apache est le service d'hébergement web le plus populaire. Le serveur Apache comme tous les autres serveurs web permet d'établir une connexion entre un 
-		serveur et les navugateurs des visiteurs du site web. Si nous installons que Apache, nous n'avons que le service HTTP. Pour avoir le service HTTPS donc sécurisé, il faut activer le module SSL et générer un certificat SSL
-		autosigné grâce à Openssl afin d'activer HTTPS. Il faut également créer la configuration du site puis nous activons le site afin qu'il soit accessible sur les différents clients.</p>
-    </section>
-    <section>
-        <h4>Serveur Mail (SMTP, IMAP, POP)</h4>
-		<p>Pour le serveur mail, nous avons décidé d'utiliser postfix comme serveur SMTP, mailutils pour tester l'envoi de mail sur le serveur et dovecot pour le serveur IMAP/POP. Nous avons choisi postfix car c'est le MTA
-		(Mail Transfert Agent) par défaut de Ubuntu. Pour l'installation de postfix, il y a de nombreuses étapes à suivre qui sont détaillées dans le fichier de configuration. Nous avons choisi d'utiliser mailutils pour tester
-		l'envoi de mail sur le serveur car cette solution permet de gérer les mails sous Ubuntu en permettant de consulter les mails locaux ou d'en envoyer depuis le terminal. Enfin, nous avons choisi l'application dovecot car 
-		c'est une application d'agent de distribution des courriels MDA et qui a comme préoccupation principale la sécurité. De plus dovecot utilise très peu de mémoire ce qui peut être un avantage avec les différents serveurs 
-		que nous avons à installer.</p>
-    </section>
-    <section>
-        <h4>Serveur de fichier (Samba)</h4>
-		<p>Enfin, pour le serveur de fichier, nous avons décidé de configurer Samba en tant que serveur de fichiers. Samba est recommandé par la documaentation Ubuntu lors de l'installation de Ubuntu serveur. Le serveur de fichier
-		permet de mettre en réseau les différents ordinateurs clients des HCL. Cela permet le partage de fichiers.</p>
-    </section>
-	<section>
-		<h4>Protocole NTP</h4>
-		<p>Nous avons décidé en fin de projet de mettre en place le protocole NTP afin de pouvoir synchroniser les horologes des différents systèmes informatiques. Le protocole NTP repose sur le protocole UDP et s'appuie sur le UTC
-		(Coordinated Universal Time). Le protocole NTP peut combler les problèmes de connexion temporaires du réseau.</p>
-    </section>
-	<section class="Paragraphe" id="Evolution">
+    <section class="Paragraphe" id="Evolution">
         <h3>Propositions d'évolutions</h3>
-		<p>Durant tout ce projet, nous avons pu voir que nous pourrions améliorer notre mise en place de l'infrastructure à l'aide de plusieurs solutions de sécurité permettant de sécuriser les différents flux entre les différents
-		sites. Nous aurions pu mettre en place le protocole AAA. Ce protocole permet de réaliser trois fonctions : Authentification, Autorisation et Traçabilité (en anglais Authentication, Authorization, and Accounting/Auditing).
-		L'architecture AAA permet aux utilisateurs d'accéder aux périphériques en réseau qui leur ont été attribués et protège le réseau contre les accès non autorisés. Nous aurions pu également mettre en place le chiffrement des données.</p>
-		<p>Nous pourrions peut-être penser à restructurer l'infrastructure réseau afin d'avoir une infrastructure évolutive permettant de réagire facilement et rapidement contre des attaques sans impacter les performances de l'infrastructure
-		en place. Nous pouvons appliquer également une meilleure gestion du stockage des différentes données.</p>
+        <p>Durant tout ce projet, nous avons pu voir que nous pourrions améliorer notre mise en place de l'infrastructure à l'aide de plusieurs solutions de sécurité permettant de sécuriser les différents flux entre les différents
+            sites. Nous aurions pu mettre en place le protocole AAA. Ce protocole permet de réaliser trois fonctions : Authentification, Autorisation et Traçabilité (en anglais Authentication, Authorization, and Accounting/Auditing).
+            L'architecture AAA permet aux utilisateurs d'accéder aux périphériques en réseau qui leur ont été attribués et protège le réseau contre les accès non autorisés. Nous aurions pu également mettre en place le chiffrement des données.</p>
+        <p>Nous pourrions peut-être penser à restructurer l'infrastructure réseau afin d'avoir une infrastructure évolutive permettant de réagire facilement et rapidement contre des attaques sans impacter les performances de l'infrastructure
+            en place. Nous pouvons appliquer également une meilleure gestion du stockage des différentes données.</p>
     </section>
-	<section class="Paragraphe" id="Conclusion">
+    <section class="Paragraphe" id="Conclusion">
         <h3>Conclusion</h3>
-		<p>Pour conclure, ce projet nous a permis de mettre en pratique les différents acquis lors de notre premier semestre de spécialisation. Nous avons pu mettre en place les différentes pièces du puzzle et les imbriquer entre
-		elles. Cela nous a également permis d'avoir un avant-goût de ce que nous pourrions découvrir dans les entreprises et dans notre futur métier.</p>
+        <p>Pour conclure, ce projet nous a permis de mettre en pratique les différents acquis lors de notre premier semestre de spécialisation. Nous avons pu mettre en place les différentes pièces du puzzle et les imbriquer entre
+            elles. Cela nous a également permis d'avoir un avant-goût de ce que nous pourrions découvrir dans les entreprises et dans notre futur métier.</p>
     </section>
+    <button onclick="topFunction()" id="myBtn" title="Go to top">&#8593</button>
 </main>
 <footer>
     Par Alexandre Drevet et Axel François
-</footer></body></html>
+</footer></body><script src="script.js"></script></html>
