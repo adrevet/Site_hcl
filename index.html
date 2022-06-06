@@ -80,7 +80,9 @@
     </section>
     <section>
         <h4>Serveur Web (Apache2)</h4>
-		<p></p>
+		<p>Pour le serveur Web, nous avons décidé d'utiliser Apache. Apache est le service d'hébergement web le plus populaire. Le serveur Apache comme tous les autres serveurs web permet d'établir une connexion entre un 
+		serveur et les navugateurs des visiteurs du site web. Si nous installons que Apache, nous n'avons que le service HTTP. Pour avoir le service HTTPS donc sécurisé, il faut activer le module SSL et générer un certificat SSL
+		autosigné grâce à Openssl afin d'activer HTTPS. Il faut également créer la configuration du site puis nous activons le site afin qu'il soit accessible sur les différents clients.</p>
     </section>
     <section>
         <h4>Serveur Mail (SMTP, IMAP, POP)</h4>
@@ -92,7 +94,8 @@
     </section>
     <section>
         <h4>Serveur de fichier (Samba)</h4>
-		<p></p>
+		<p>Enfin, pour le serveur de fichier, nous avons décidé de configurer Samba en tant que serveur de fichiers. Samba est recommandé par la documaentation Ubuntu lors de l'installation de Ubuntu serveur. Le serveur de fichier
+		permet de mettre en réseau les différents ordinateurs clients des HCL. Cela permet le partage de fichiers.</p>
     </section>
 	<section class="Paragraphe" id="Evol">
         <h3>Propositions d'évolutions</h3>
