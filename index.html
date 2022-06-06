@@ -59,6 +59,8 @@
     </section>
     <section class="Paragraphe">
         <h3>Choix des différents logiciels sur le serveur</h3>
+		<p>Pour l'installation du serveur, nous avons décidé d'installer un serveur Ubuntu et non un serveur Windows. En effet, durant l'année, nous avons déjà eu l'occasion d'installer et d'utiliser un serveur Windows et 
+		non un serveur Ubuntu. Nous avons donc vu une opportunité dans ce projet d'apprendre à installer et à configurer un serveur Ubuntu.</p>
     </section>
     <section class="Paragraphe">
         <h4>Serveur DNS (Bind9)</h4>
@@ -77,9 +79,15 @@
     </section>
     <section>
         <h4>Serveur Mail (SMTP, IMAP, POP)</h4>
+		<p>Pour le serveur mail, nous avons décidé d'utiliser postfix comme serveur SMTP, mailutils pour tester l'envoi de mail sur le serveur et dovecot pour le serveur IMAP/POP. Nous avons choisi postfix car c'est le MTA
+		(Mail Transfert Agent) par défaut de Ubuntu. Pour l'installation de postfix, il y a de nombreuses étapes à suivre qui sont détaillées dans le fichier de configuration. Nous avons choisi d'utiliser mailutils pour tester
+		l'envoi de mail sur le serveur car cette solution permet de gérer les mails sous Ubuntu en permettant de consulter les mails locaux ou d'en envoyer depuis le terminal. Enfin, nous avons choisi l'application dovecot car 
+		c'est une application d'agent de distribution des courriels MDA et qui a comme préoccupation principale la sécurité. De plus dovecot utilise très peu de mémoire ce qui peut être un avantage avec les différents serveurs 
+		que nous avons à installer.</p>
     </section>
     <section>
         <h4>Serveur de fichier (Samba)</h4>
+		<p></p>
     </section>
 </main>
 <footer>
