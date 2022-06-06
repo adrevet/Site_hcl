@@ -43,7 +43,7 @@
     <section class="Paragraphe" id="Introduction">
         <h3>Introduction</h3>
         <p>Le but de ce projet de mise en place d'Infrastructure Réseau est de mettre en oeuvre les différentes compétences acquises lors des différents modules efectués lors de ce semestre.
-                                                                                                                                                                                                                                                                                                                            Nous devions mettre en place une infrastructure réseau et logicielle pour les Hospices Civils de Lyon (HCL).</p>
+          Nous devions mettre en place une infrastructure réseau et logicielle pour les Hospices Civils de Lyon (HCL).</p>
         <p>L'infrastructure à mettre en place sous le logiciel GNS3 est la suivante :</p>
         <img src="Reseau_Conf.png" alt="">
         <p>Voici le plan d'adressage que nous avons mis en place :
@@ -53,31 +53,33 @@
     <section class="Paragraphe" id="DescProjet">
         <h3>Mise en place du projet</h3>
         <p>Pour ce projet, nous avons décidé de nous partager l'infrastructure réseau. En effet, Alexandre s'est occupé de mettre le Backbone ainsi que les routeurs connectés aux différents HCL et au Data Center.
-                                                                                                                                                                                                                                                                                                                            Axel de son côté s'est occupé de la création de la Machine Virtuelle servant de serveur et des autres VM clientes pour les HCL.</p>
+        Axel de son côté s'est occupé de la création de la Machine Virtuelle servant de serveur et des autres VM clientes pour les HCL.</p>
         <p>Pour ce qui est de l'infrastructure réseau, nous avons utilisé les protocoles BGP et OSPF afin de pouvoir communiquer entre les différents sites et le Data Center. Nous avons également joué sur les priorités des 
-                                                                                                                                                                                                                                                                                                                            routes afin de pouvoir réaliser la liaison Active/Passive.</p>
+        routes afin de pouvoir réaliser la liaison Active/Passive.</p>
     </section>
     <section class="Paragraphe">
         <h3>Choix des différents logiciels sur le serveur</h3>
-        <p>Une fois que le serveur était installé correctement, nous avons commencé par créer le DHCP sur le serveur afin de pouvoir attribuer dynamiquement des adresses IP dans chaque site HCL. Mais avant cela, nous avons
-                                                                                                                                                                                                                                                                                                                            attribué une adresse IP fixe à notre serveur (164.4.1.1). Afin de mettre en place le DHCP, nous avons modifié le fichier dhcp.conf et déclaré les différents subnets afin que chaque site HCL ait une adresses IP. Il a 
-                                                                                                                                                                                                                                                                                                                            fallu également modifier le fichier isc-dhcp-server afin de pouvoir mettre le bon nom de l'interface utilisée que nous pouvons voir à l'aide de la commande ip a.</p>
-        <!--Mettre les modifs façon code-->
     </section>
     <section class="Paragraphe">
-        <h3>Serveur DNS (Bind9)</h3>
+        <h4>Serveur DNS (Bind9)</h4>
     </section>
     <section>
-        <h3>Serveur DHCP</h3>
+        <h4>Serveur DHCP</h4>
+		<p>Dans ce projet, nous devions mettre également en place un serveur DHCP. Le protocole DHCP est un service réseau permettant aux ordinateurs hôtes de se voir attribuer automatiquement et dynamiquement des adresses
+		IP. Cela va nous servir à attribuer dynamiquement des adresses IP dans chaque site HCL où nous avons deux clients. De leur côté les ordinateurs configurés pour être ddes clients DHCP n'ont aucun contrôle sur les paramètres
+		qu'ils reçoivent du serveur DHCP. Avant de pouvoir configurer le DHCP, il faut que nous attribuons une adresse IP fixe à notre serveur (164.4.1.1). Pour mettre en place le serveur DHCP, nous avon smodifié le fichier dhcpd.conf
+		où nous avons déclaré les différents subnets (donc les différents sites HCL) afin que chaque client ait son adresse IP. Nous avons également modifié le fichier isc-dhcp-server afin de mettre le bon nom de l'interface utilisée.
+		Pour voir le nom de cette interface, nous entrons la commande ip a.</p>
     </section>
     <section>
-        <h3>Serveur Web (Apache2)</h3>
+        <h4>Serveur Web (Apache2)</h4>
+		<p></p>
     </section>
     <section>
-        <h3>Serveur Mail (SMTP, IMAP, POP)</h3>
+        <h4>Serveur Mail (SMTP, IMAP, POP)</h4>
     </section>
     <section>
-        <h3>Serveur de fichier (Samba)</h3>
+        <h4>Serveur de fichier (Samba)</h4>
     </section>
 </main>
 <footer>
