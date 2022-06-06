@@ -64,6 +64,11 @@
     </section>
     <section class="Paragraphe">
         <h4>Serveur DNS (Bind9)</h4>
+		<p>Pour la configuration du serveur DNS, nous avons décidé d'installer le serveur bind9. Tout d'abord, le DNS est un service TCP/IP permettant la correspondance entre un nom de domaine et une adresse IP. Nous
+		avons décidé d'installer le serveur bind9 car c'est ce que préconise la documentation Ubuntu. En effet, Ubuntu est livré avec BIND qui est le programme le plus couramment utilisé pour maintenir un serveur de noms
+		sous Linux. Une fois bind9 installé, nous modifions plusieurs fichiers : le fichier resolv.conf.head où nous mettons les différents adresses IP des serveurs à atteindre (ATTENTION JE NE SUIS PAS SUR DE MOI), le fichier
+		named.conf.local où nous autorisons le transfert avec l'adresse IP de google (8.8.8.8), puis nous créons et modifions le fichier db.hcl.fr où nous configurons les différentes adresses IP du serveur, du serveur mail et du
+		serveur web.</p>
     </section>
     <section>
         <h4>Serveur DHCP</h4>
