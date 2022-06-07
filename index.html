@@ -221,7 +221,51 @@
             <p>Pour le serveur Web, nous avons décidé d'utiliser Apache. Apache est le service d'hébergement web le plus populaire. Le serveur Apache comme tous les autres serveurs web permet d'établir une connexion entre un 
                 serveur et les navugateurs des visiteurs du site web. Si nous installons que Apache, nous n'avons que le service HTTP. Pour avoir le service HTTPS donc sécurisé, il faut activer le module SSL et générer un certificat SSL
                 autosigné grâce à Openssl afin d'activer HTTPS. Il faut également créer la configuration du site puis nous activons le site afin qu'il soit accessible sur les différents clients.</p>
-            </section>
+            <button class="collapsible">Tutoriel et codes</button>
+            <div class="content">
+                <h5>Installation et configuration de Apache2</h5>
+                <p>
+                    Pour le serveur Web, nous utiliserons Apache, qui est le service d'hebergement web le plus populaire. Pour l'installer, il suffit de taper la commande suivante :
+                    <code>sudo apt install apache2</code>
+                </p>
+                <p>
+                    Il faut activer le module ssl pour le https
+                    <code>sudo a2enmod ssl</code>
+                </p>
+                <p>
+                    Il faut ensuite générer un certificat ssl autosigné grâce à openssl afin d'activer https. Nous utilisons la commande suivante :
+                    <code>sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server.hcl.fr.key -out /etc/ssl/certs/server.hcl.fr.crt</code>
+                </p>
+                <p>
+                    Il faut à présent créer la configuration du site. Nous créons donc le fichier de configuration avec touch dans le répertoire d'apahc comme il suit :
+                    <code>sudo touch /etc/apache2/sites-available/hcl.fr-https.conf</code><br>
+                    Il faut ensuite éditer le fichier et taper ce qui suit :
+                    <code><br>
+                        VirtualHost *:80<br>
+                            RewriteEngine On<br>
+                            RewriteCond %{HTTPS} !=on<br>
+                            RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]<br>
+                        /virtualhost<br>
+                        VirtualHost *:443<br>
+                            ServerAdmin webmaster@localhost<br>
+                            DocumentRoot /var/www/html/Site_hcl<br>
+                            ErrorLog ${APACHE_LOG_DIR}/error.log<br>
+                            CustomLog ${APACHE_LOG_DIR}/access.log combined<br>
+                            SSLEngine on<br>
+                            SSLCertificateFile /etc/ssl/certs/server.hcl.fr.crt<br>
+                            SSLCertificateKeyFile /etc/ssl/private/server.hcl.fr.key<br>
+                        /VirtualHost</code><br>
+                    Remplacez le paramètre DocumentRoot par le chemin de votre site (par défaut /var/www/html/)
+                </p>
+                <p>
+                    Pour activer le site il faut taper les commandes suivantes :
+                    <code><br>
+                        sudo a2ensite hcl.fr-https<br>
+                        service apache2 restart 
+                    </code>
+                </p>
+            </div>
+        </section>
         <section id="Mailid" class="SousParagraphe">
             <h4>Serveur Mail (SMTP, IMAP, POP)</h4>
             <p>Pour le serveur mail, nous avons décidé d'utiliser postfix comme serveur SMTP, mailutils pour tester l'envoi de mail sur le serveur et dovecot pour le serveur IMAP/POP. Nous avons choisi postfix car c'est le MTA
