@@ -208,14 +208,21 @@ li.dropdown {
 .content {
     padding: 0 18px;
     max-height: 0;
-    overflow: hidden;
+    overflow: scroll;
     transition: max-height 0.2s ease-out;
     background-color: #f1f1f1;
 }
 
 code {
-    background-color: #fff;
-    padding: 2px;
-    font-family: Arial, Helvetica, sans-serif;
-    color: slategray;
+    font-family: Consolas, Monaco, Courier New, Courier, monospace;
+    color: rgb(138, 38, 38);
+    display: block;
+    background: white;
+    overflow: scroll;
+    max-width: 100%;
+    padding-left: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px;
+    border-style: solid;
 }

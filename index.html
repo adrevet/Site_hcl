@@ -76,16 +76,16 @@
                 <h5>Installation et configuration de BIND9</h5>
                 <p>
                     BIND9 s'installe avec la commande
-                    <code>sudo apt install bind9</code>. Un autre package utile pour tester et résoudre les problèmes de DNS est dnsutils. Vous pouvez l'installer avec la commande
-                    <code>sudo apt install dnsutils</code>. Une fois les installations terminées, les fichiers de configuration du DNS sont stockés dans le répertoire /etc/bind. Le fichier de configuration principal est /etc/bind/named.conf qui celui-ci comprend named.conf.local pour modifier vos zones et named.conf.options comprenant les options DNS globales.
+                    <code>sudo apt install bind9</code> Un autre package utile pour tester et résoudre les problèmes de DNS est dnsutils. Vous pouvez l'installer avec la commande
+                    <code>sudo apt install dnsutils</code> Une fois les installations terminées, les fichiers de configuration du DNS sont stockés dans le répertoire /etc/bind. Le fichier de configuration principal est /etc/bind/named.conf qui celui-ci comprend named.conf.local pour modifier vos zones et named.conf.options comprenant les options DNS globales.
                 </p>
                 <p>
                     Editez le fichier /etc/bind/named.conf.options pour définir les adresses IP des serveurs DNS de votre FAI. Dans notre cas nous n'en avons pas l'utilité de le modifier. Pour activer la configuration, redémarrez le serveur DNS à l'aide de la commande
-                    <code>sudo systemctl restart bind9.service</code>.
+                    <code>sudo systemctl restart bind9.service</code>
                 </p>
                 <p>
                     Maintenant, éditez le fichier /etc/bind/named.conf.local pour transformer BIND9 en serveur primaire et modifiez les paramètres suivants :
-                    <code><br>
+                    <code>
                         zone "hcl.fr" IN {
                         <br>
                             type master;
@@ -98,25 +98,25 @@
                 </p>
                 <p>
                     Créez un nouveau fichier de zone avec comme modèle un fichier existant. Tapez la commande suivante :
-                    <code>sudo cp /etc/bind/db.local /etc/bined/db.hcl.fr</code>.
+                    <code>sudo cp /etc/bind/db.local /etc/bined/db.hcl.fr</code>
                 </p>
                 <p>
                     Modifiez avec la commande
                     <code>nano /etc/bind/db.hcl.fr</code> le nouveau fichier créé et ajoutez :
-                    <code><br>
+                    <code>
                         $TTL    604800
                         <br>
                         @       IN      SOA     hcl.fr. root.hcl.fr. (
                         <br>
-                                                    2         ; Serial
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2         ; Serial
                         <br>
-                                                604800         ; Refresh
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;604800         ; Refresh
                         <br>
-                                                86400         ; Retry
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;86400         ; Retry
                         <br>
-                                                2419200         ; Expire
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2419200         ; Expire
                         <br>
-                                                604800 )       ; Negative Cache TTL
+                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;604800 )       ; Negative Cache TTL
                         <br>
                         ;name server
                         <br>
@@ -138,14 +138,14 @@
                 </p>
                 <p>
                     Pensez à redémarrer le service BIND9 à l'aide de la commande
-                    <code>sudo systemctl restart bind9.service</code>.
+                    <code>sudo systemctl restart bind9.service</code>
                 </p>
                 <p>
                     Vous pouvez modifier le fichier de zone inversée, mais pour notre cas, nous ne le modifierons pas.
                 </p>
                 <p>
                     Pensez à modifier le fichier /etc/resolv.conf.head et mettez les configurations suivantes :
-                    <code><br>
+                    <code>
                         nameserver 127.0.0.1
                         <br>
                         nameserver 8.8.8.8
@@ -165,41 +165,32 @@
                 IP. Cela va nous servir à attribuer dynamiquement des adresses IP dans chaque site HCL où nous avons deux clients. De leur côté, les ordinateurs configurés pour être des clients DHCP n'ont aucun contrôle sur les paramètres
                 qu'ils reçoivent du serveur DHCP. Avant de pouvoir configurer le DHCP, il faut que nous attribuons une adresse IP fixe à notre serveur (164.4.1.1). Pour mettre en place le serveur DHCP, nous avons modifié le fichier dhcpd.conf
                 où nous avons déclaré les différents subnets (donc les différents sites HCL) afin que chaque client ait son adresse IP. Nous avons également modifié le fichier isc-dhcp-server afin de mettre le bon nom de l'interface utilisée.
-                Pour voir le détail des configurations, déroulez le tutoriel ci-dessous. Pour voir le nom de cette interface, nous entrons la commande <code>ip a</code>. Nous avons également configuré sur les serveurs des différents sites un <code>ip-helper</code>
+                Pour voir le détail des configurations, déroulez le tutoriel ci-dessous. Pour voir le nom de cette interface, nous entrons la commande <code>ip a</code> Nous avons également configuré sur les serveurs des différents sites un <code>ip-helper</code>
                 pointant vers l'IP du serveur DNS afin de pouvoir faire la distribution d'IP dans les sites distants.</p>
             <button class="collapsible">Tutoriel et codes</button>
             <div class="content">
                 <h5>Installation et configuration du DHCP</h5>
                 <p>
                     Le DHCP s'installe avec la commande
-                    <code>sudo apt install isc-dhcp-server</code>.
+                    <code>sudo apt install isc-dhcp-server</code>
                 </p>
                 <p>
                     Modifiez le fichier de configuration par défaut /etc/dhcp/dhcpd.conf et ajoutez les configurations suivantes :
-                    <code><br>
-                        subnet 164.4.1.0 netmask 255.255.255.0 {
-                            <br>
-                            range 164.4.1.10 164.4.1.250;
-                            <br>
-                            option routers 164.4.1.254;
-                            <br>
-                           }<br>
+                    <code>
+                        subnet 164.4.1.0 netmask 255.255.255.0 {<br>
+                        &emsp;  range 164.4.1.10 164.4.1.250;<br>
+                        &emsp;  option routers 164.4.1.254;<br>
+                        }<br>
                            
-                           subnet 164.4.2.0 netmask 255.255.255.0 {
-                            <br>
-                            range 164.4.2.1 164.4.2.250;
-                            <br>
-                            option routers 164.4.2.254;
-                            <br>
-                           }<br>
+                        subnet 164.4.2.0 netmask 255.255.255.0 {<br>
+                        &emsp;  range 164.4.2.1 164.4.2.250;<br>
+                        &emsp;  option routers 164.4.2.254;<br>
+                        }<br>
                            
-                           subnet 164.4.3.0 netmask 255.255.255.0 {
-                            <br>
-                            range 164.4.3.1 164.4.3.250;
-                            <br>
-                            option routers 164.4.3.254;
-                            <br>
-                           }</code><br>
+                        subnet 164.4.3.0 netmask 255.255.255.0 {<br>
+                        &emsp;  range 164.4.3.1 164.4.3.250;<br>
+                        &emsp;  option routers 164.4.3.254;<br>
+                        }</code>
                     Avec ces configurations, le serveur DHCP donnera aux clients une adresse IP dans la plage que vous avez donné avec la commande range.
                 </p>
                 <p>
@@ -240,26 +231,26 @@
                     Il faut à présent créer la configuration du site. Nous créons donc le fichier de configuration avec touch dans le répertoire d'Apache comme il suit :
                     <code>sudo touch /etc/apache2/sites-available/hcl.fr-https.conf</code><br>
                     Il faut ensuite éditer le fichier et taper ce qui suit :
-                    <code><br>
-                        VirtualHost *:80<br>
-                            RewriteEngine On<br>
-                            RewriteCond %{HTTPS} !=on<br>
-                            RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]<br>
-                        /virtualhost<br>
-                        VirtualHost *:443<br>
-                            ServerAdmin webmaster@localhost<br>
-                            DocumentRoot /var/www/html/Site_hcl<br>
-                            ErrorLog ${APACHE_LOG_DIR}/error.log<br>
-                            CustomLog ${APACHE_LOG_DIR}/access.log combined<br>
-                            SSLEngine on<br>
-                            SSLCertificateFile /etc/ssl/certs/server.hcl.fr.crt<br>
-                            SSLCertificateKeyFile /etc/ssl/private/server.hcl.fr.key<br>
-                        /VirtualHost</code><br>
+                    <code>
+                        &lsaquo;VirtualHost *:80&rsaquo;<br>
+                        &emsp;    RewriteEngine On<br>
+                        &emsp;    RewriteCond %{HTTPS} !=on<br>
+                        &emsp;    RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]<br>
+                        &lsaquo;/virtualhost&rsaquo;<br>
+                        &lsaquo;VirtualHost *:443&rsaquo;<br>
+                        &emsp;    ServerAdmin webmaster@localhost<br>
+                        &emsp;    DocumentRoot /var/www/html/Site_hcl<br>
+                        &emsp;    ErrorLog ${APACHE_LOG_DIR}/error.log<br>
+                        &emsp;    CustomLog ${APACHE_LOG_DIR}/access.log combined<br>
+                        &emsp;    SSLEngine on<br>
+                        &emsp;    SSLCertificateFile /etc/ssl/certs/server.hcl.fr.crt<br>
+                        &emsp;    SSLCertificateKeyFile /etc/ssl/private/server.hcl.fr.key<br>
+                        &lsaquo;/VirtualHost&rsaquo;</code><br>
                     Remplacez le paramètre DocumentRoot par le chemin de votre site (par défaut /var/www/html/)
                 </p>
                 <p>
                     Pour activer le site il faut taper les commandes suivantes :
-                    <code><br>
+                    <code>
                         sudo a2ensite hcl.fr-https<br>
                         service apache2 restart 
                     </code>
@@ -277,31 +268,26 @@
                 <h5>Installation et configuration de Postfix</h5>
                 <p>
                     Postfix s'installe avec la commande
-                    <code>sudo apt install postfix</code>. Si lors de l'installation une fenêtre vous demande la configuration de postfix, effectuez la configuration imédiatement ou choisissez "No Configuration" pour y revenir plus tard. Dans le second cas, utilisez la commande
+                    <code>sudo apt install postfix</code> Si lors de l'installation une fenêtre vous demande la configuration de postfix, effectuez la configuration imédiatement ou choisissez "No Configuration" pour y revenir plus tard. Dans le second cas, utilisez la commande
                     <code>sudo dpkg-reconfigure postfix</code>
                     pour relancer la configuration.
                 </p>
                 <p>
                     Pour la configuration, choisir les paramètres suivant à chaque fenêtre respective :
-                    <code><br>
-                        Internet Site
-                        <br>
-                        hcl.fr
-                        <br>
-                        tp #remplacer par votre nom d'utilisateur
-                        <br>
-                        mail.hcl.fr, localhost.localdomain, localhost, hcl.fr
-                        <br>
+                    <code>
+                        Internet Site<br>
+                        hcl.fr<br>
+                        tp #remplacer par votre nom d'utilisateur<br>
+                        mail.hcl.fr, localhost.localdomain, localhost, hcl.fr<br>
                         No<br>
-                        127.0.0.1/8 [::ffff:127.0.0.0]/104 [::1]/128 164.4.1.1/24	#164.4.1.1/24 remplacer par l'IP statique de votre serveur
-                        <br>
+                        127.0.0.1/8 [::ffff:127.0.0.0]/104 [::1]/128 164.4.1.1/24	#164.4.1.1/24 remplacer par l'IP statique de votre serveur<br>
                         0<br>
                         +<br>
                         all</code>
                 </p>
                 <p>
                     Editez le fichier /etc/postfix/main.cf pour ajouter et modifiez les paramètres suivants :
-                    <code><br>
+                    <code>
                         mydomain = hcl.fr<br>
                         mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 164.4.0.0/22<br>
                         home_mailbox = Maildir/
@@ -317,7 +303,7 @@
                         passwd user1<br>
                         <br>
                         useradd -m user2<br>
-                        passwd user2</code><br>
+                        passwd user2</code>
                 </p>
                 <p>Redémarrez le service postfix :
                     <br><code>
@@ -338,16 +324,17 @@
                         écrivez ce que vous voulez ici, c'est le corps du message<br>
                         Pour finir faire retour à la ligne, "." et retour à la ligne.<br>
                         .<br>
-                        quit</code><br>
+                        quit</code>
                     puis allez dans /home/user2/Maildir/new. Vous devriez trouver votre message.
                 </p>
                 <h5>Installation et configuration de Dovecot</h5>
                 <p>
                     Dovecot s'installe avec la commande
-                    <code>sudo apt install dovecot-imapd dovecot-pop3d</code>.
+                    <code>sudo apt install dovecot-imapd dovecot-pop3d</code>
                 </p>
                 <p>
-                    Modifiez /etc/dovecot/dovecot.conf et ajoutez :<br><code>
+                    Modifiez /etc/dovecot/dovecot.conf et ajoutez :
+                    <code>
                         protocols = pop3 imap<br>
                         mail_location = maildir:~/Maildir</code>
                 </p>
@@ -378,11 +365,11 @@
                 <h5>Installation et configuration de Samba</h5>
                 <p>
                     Samba s'installe avec la commande
-                    <code>sudo apt install samba</code>.
+                    <code>sudo apt install samba</code>
                 </p>
                 <p>
                     Allez dans le fichier /etc/samba/smb.conf pour pouvoir modifier les paires clé/valeur. Créez une nouvelle section en bas du fichier pour le répertoire à partager :
-                    <code><br>
+                    <code>
                         [share]<br>
                             comment = Ubuntu File Server Share<br>
                             path = /srv/samba/share<br>
@@ -392,13 +379,13 @@
                             create mask = 0755<br>
                             force group = tp<br>
                             force user = tp
-                    </code><br>
+                    </code>
                 </p>
                 <p>
                     Maintenant que Samba est configuré, le répertoire doit être créé et les autorisations modifiées. Tapez les commandes suivantes :
-                    <code><br>
+                    <code>
                         sudo mkdir -p /srv/samba/share<br>
-                        sudo chown nobody:nogroup /srv/samba/share/</code><br>
+                        sudo chown nobody:nogroup /srv/samba/share/</code>
                 </p>
                 <p>
                     Redémarrez les services samba pour activer la nouvelle configuration :
@@ -419,7 +406,7 @@
                 </p>
                 <p>
                     Puis dites au routeur d'utiliser le servuer NTP comme source avec les commandes :
-                    <code><br>
+                    <code>
                         ntp server 164.4.1.1 prefer source fa0/0<br>
                         ntp update-calendar
                     </code>
