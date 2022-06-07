@@ -153,6 +153,10 @@
                         nameserver 1.1.1.1
                     </code>
                 </p>
+                <p>
+                    Pour voir l'état de votre serveur DNS, tapez la commande :
+                    <code>sudo service bind9 status</code>
+                </p>
             </div>
         </section>
         <section id="DHCPid" class="SousParagraphe">
@@ -162,6 +166,55 @@
                 qu'ils reçoivent du serveur DHCP. Avant de pouvoir configurer le DHCP, il faut que nous attribuons une adresse IP fixe à notre serveur (164.4.1.1). Pour mettre en place le serveur DHCP, nous avons modifié le fichier dhcpd.conf
                 où nous avons déclaré les différents subnets (donc les différents sites HCL) afin que chaque client ait son adresse IP. Nous avons également modifié le fichier isc-dhcp-server afin de mettre le bon nom de l'interface utilisée.
                 Pour voir le nom de cette interface, nous entrons la commande ip a. Nous avons également configuré sur les serveurs des différents site un ip-helper pointant vers l'IP du serveur DNS afin de pouvoir faire la distribution d'IP dans les sites distants.</p>
+            <button class="collapsible">Tutoriel et codes</button>
+            <div class="content">
+                <h5>Installation et configuration du DHCP</h5>
+                <p>
+                    Le DHCP s'installe avec la commande
+                    <code>sudo apt install isc-dhcp-server</code>.
+                </p>
+                <p>
+                    Modifiez le fichier de configuration par défaut /etc/dhcp/dhcpd.conf et ajoutez les configurations suivantes :
+                    <code><br>
+                        subnet 164.4.1.0 netmask 255.255.255.0 {
+                            <br>
+                            range 164.4.1.10 164.4.1.250;
+                            <br>
+                            option routers 164.4.1.254;
+                            <br>
+                           }<br>
+                           
+                           subnet 164.4.2.0 netmask 255.255.255.0 {
+                            <br>
+                            range 164.4.2.1 164.4.2.250;
+                            <br>
+                            option routers 164.4.2.254;
+                            <br>
+                           }<br>
+                           
+                           subnet 164.4.3.0 netmask 255.255.255.0 {
+                            <br>
+                            range 164.4.3.1 164.4.3.250;
+                            <br>
+                            option routers 164.4.3.254;
+                            <br>
+                           }<br>
+                    </code>
+                    Avec ces configurations, le serveur DHCP donnera aux clients une adress IP dans la plage que vous avez donné avec la commande range.
+                </p>
+                <p>
+                    Maintenant modifiez le fichier /etc/default/isc-dhcp-server pour spécifier les interfaces que dhcpd doit écouter. Mettez la configuration suivante :
+                    <code>INTERFACESv4="enp0s3"</code>
+                </p>
+                <p>
+                    Après avoir fait les différentes configurations, redémarrez le service dhcpd avec la commande :
+                    <code>sudo systemctl restart isc-dhcp-server.service</code>
+                </p>
+                <p>
+                    Pour voir l'état de votre serveur DHCP, vous pouvez taper la commande :
+                    <code>sudo service isc-dhcp-server status</code>
+                </p>
+            </div>
         </section>
         <section id="Webid" class="SousParagraphe">
             <h4>Serveur Web (Apache2)</h4>
