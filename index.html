@@ -368,13 +368,45 @@
                         ... contenu du mail<br>
                         quit</code>
                 </p>
-
             </div>
         </section>
         <section id="Sambaid" class="SousParagraphe">
             <h4>Serveur de fichier (Samba)</h4>
-            <p>Enfin, pour le serveur de fichier, nous avons décidé de configurer Samba en tant que serveur de fichiers. Samba est recommandé par la documaentation Ubuntu lors de l'installation de Ubuntu serveur. Le serveur de fichier
+            <p>Enfin, pour le serveur de fichier, nous avons décidé de configurer Samba . Samba est recommandé par la documentation Ubuntu lors de l'installation de Ubuntu serveur. Le serveur de fichier
                 permet de mettre en réseau les différents ordinateurs clients des HCL. Cela permet le partage de fichiers.</p>
+            <button class="collapsible">Tutoriel et codes</button>
+            <div class="content">
+                <h5>Installation et configuration de Samba</h5>
+                <p>
+                    Samba s'installe avec la commande
+                    <code>sudo apt install samba</code>.
+                </p>
+                <p>
+                    Allez dans le fichier /etc/samba/smb.conf pour pouvoir modifier les paires clé/valeur. Créez une nouvelle section en bas du fichier pour le répertoire à partager :
+                    <code><br>
+                        [share]<br>
+                            comment = Ubuntu File Server Share<br>
+                            path = /srv/samba/share<br>
+                            browsable = yes<br>
+                            guest ok = yes<br>
+                            read only = no<br>
+                            create mask = 0755<br>
+                            force group = tp<br>
+                            force user = tp<br>
+                    </code>
+                </p>
+                <p>
+                    Maintenant que Samba est configuré, le répertoire doit être créé et les autorisations modifiées. Tapez les commandes suivantes :
+                    <code><br>
+                        sudo mkdir -p /srv/samba/share<br>
+                        sudo chown nobody:nogroup /srv/samba/share/<br>
+                    </code>
+                </p>
+                <p>
+                    Redémarrez les services samba pour activer la nouvelle configuration :
+                    <code>sudo systemctl restart smbd.service nmbd.service</code>
+                </p>
+            </div>
         </section>
         <section id="NTPid" class="SousParagraphe">
             <h4 id="NTPid">Protocole NTP</h4>
