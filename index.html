@@ -199,8 +199,7 @@
                             <br>
                             option routers 164.4.3.254;
                             <br>
-                           }<br>
-                    </code>
+                           }</code><br>
                     Avec ces configurations, le serveur DHCP donnera aux clients une adresse IP dans la plage que vous avez donné avec la commande range.
                 </p>
                 <p>
@@ -318,7 +317,7 @@
                         passwd user1<br>
                         <br>
                         useradd -m user2<br>
-                        passwd user2<br></code>
+                        passwd user2</code><br>
                 </p>
                 <p>Redémarrez le service postfix :
                     <br><code>
@@ -339,8 +338,7 @@
                         écrivez ce que vous voulez ici, c'est le corps du message<br>
                         Pour finir faire retour à la ligne, "." et retour à la ligne.<br>
                         .<br>
-                        quit<br>
-                    </code>
+                        quit</code><br>
                     puis allez dans /home/user2/Maildir/new. Vous devriez trouver votre message.
                 </p>
                 <h5>Installation et configuration de Dovecot</h5>
@@ -393,15 +391,14 @@
                             read only = no<br>
                             create mask = 0755<br>
                             force group = tp<br>
-                            force user = tp<br>
-                    </code>
+                            force user = tp
+                    </code><br>
                 </p>
                 <p>
                     Maintenant que Samba est configuré, le répertoire doit être créé et les autorisations modifiées. Tapez les commandes suivantes :
                     <code><br>
                         sudo mkdir -p /srv/samba/share<br>
-                        sudo chown nobody:nogroup /srv/samba/share/<br>
-                    </code>
+                        sudo chown nobody:nogroup /srv/samba/share/</code><br>
                 </p>
                 <p>
                     Redémarrez les services samba pour activer la nouvelle configuration :
