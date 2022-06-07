@@ -28,6 +28,9 @@
                         <a href="#NTPid">NTP</a>
                     </div>
                 </li>
+				<li>
+                    <a href="#VM">Choix VM cliente</a>
+                </li>
                 <li>
                     <a href="#Evolution">Propositions d'évolutions</a>
                 </li>
@@ -68,7 +71,6 @@
                 avons décidé d'installer le serveur bind9 car c'est ce que préconise la documentation Ubuntu. En effet, BIND qui est le programme le plus couramment utilisé pour maintenir un serveur de noms
                 sous Linux. Une fois bind9 installé, nous modifions plusieurs fichiers : le fichier named.conf.local où nous indiquons la base de donnée de résolution d'addresse et les subnets pouvant effectuer des requêtes, nous modifions le fichier named.conf.options pour encore une fois autoriser les subnets à faire des requêtes, puis nous créons et modifions le fichier db.hcl.fr où nous configurons les différentes adresses IP du serveur, du serveur mail et du
                 serveur web.</p>
-
         </section>
         <section id="DHCPid" class="SousParagraphe">
             <h4>Serveur DHCP</h4>
@@ -200,6 +202,12 @@
                 (Coordinated Universal Time). Le protocole NTP permet d'éviter de nombreux problèmes de connexion dans un réseau.</p>
         </section>
     </section>
+	<section class="Paragraphe" id="VM">
+        <h3>Choix des différents logiciels sur les VM clientes</h3>
+		<p>Pour ce qui est des Machines Virtuelles, nous avons décidé d'utiliser des VM Kali Linux qui étaient déjà présentes sur nos ordinateurs Windows. Afin d'utiliser la connexion à internet, nous utilisons l'application 
+		Firefox nous permettant d'accéder au serveur web hébergé sur le site internet www.hcl.fr. Par ailleurs, le client de messagerie que nous utilisons est Thunderbird. Thunderbird est une application de messagerie facile 
+		d'utilisation et simple à configurer.</p>
+	</section>
     <section class="Paragraphe" id="Evolution">
         <h3>Propositions d'évolutions</h3>
         <p>Durant tout ce projet, nous avons pu voir que nous pourrions améliorer notre mise en place de l'infrastructure à l'aide de plusieurs solutions de sécurité permettant de sécuriser les différents flux entre les différents
