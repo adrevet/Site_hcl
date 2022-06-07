@@ -46,7 +46,7 @@
     <h2>Mise en place d'une Infrastructure Réseau</h2>
     <section class="Paragraphe" id="Introduction">
         <h3>Introduction</h3>
-        <p>Le but de ce projet de mise en place d'Infrastructure Réseau est de mettre en oeuvre les différentes compétences acquises lors des différents modules efectués lors de ce semestre.
+        <p>Le but de ce projet de mise en place d'Infrastructure Réseau est de mettre en oeuvre les différentes compétences acquises lors des différents modules effectués pendant de ce semestre.
               Nous devions mettre en place une infrastructure réseau et logicielle pour les Hospices Civils de Lyon (HCL).</p>
         <p>L'infrastructure à mettre en place sous le logiciel GNS3 est la suivante :</p>
         <img src="Reseau_Conf.png" alt="">
@@ -57,7 +57,7 @@
     <section class="Paragraphe" id="DescProjet">
         <h3>Mise en place du projet</h3>
         <p>Pour ce projet, nous avons décidé de nous partager l'infrastructure réseau. En effet, Alexandre s'est occupé de mettre en place le Backbone ainsi que les routeurs connectés aux différents HCL et au Data Center.
-            Axel de son côté s'est occupé de la création de la Machine Virtuelle servant de serveur et des autres VM clientes pour les HCL.</p>
+            Axel, de son côté, s'est occupé de la création de la Machine Virtuelle servant de serveur et des autres VM clientes pour les HCL.</p>
         <p>Pour ce qui est de l'infrastructure réseau, nous avons utilisé les protocoles BGP et OSPF afin de pouvoir communiquer entre les différents sites et le Data Center. Nous avons également joué sur les priorités des 
             routes afin de pouvoir réaliser la liaison Active/Passive.</p>
     </section>
@@ -67,15 +67,15 @@
             non un serveur Ubuntu. Nous avons donc vu une opportunité dans ce projet d'apprendre à installer et à configurer un serveur Ubuntu.</p>
         <section id="DNSid" class="SousParagraphe">
             <h4>Serveur DNS (Bind9)</h4>
-            <p>Pour la configuration du serveur DNS, nous avons décidé d'installer le serveur bind9. Tout d'abord, le DNS est un service TCP/IP permettant la correspondance entre un nom de domaine et une adresse IP. Nous
-                avons décidé d'installer le serveur bind9 car c'est ce que préconise la documentation Ubuntu. En effet, BIND qui est le programme le plus couramment utilisé pour maintenir un serveur de noms
-                sous Linux. Une fois bind9 installé, nous modifions plusieurs fichiers : le fichier named.conf.local où nous indiquons la base de donnée de résolution d'addresse et les subnets pouvant effectuer des requêtes, nous modifions le fichier named.conf.options pour encore une fois autoriser les subnets à faire des requêtes, puis nous créons et modifions le fichier db.hcl.fr où nous configurons les différentes adresses IP du serveur, du serveur mail et du
-                serveur web.</p>
+            <p>Pour la configuration du serveur DNS, nous avons décidé d'installer le serveur BIND9. Tout d'abord, le DNS est un service TCP/IP permettant la correspondance entre un nom de domaine et une adresse IP. Nous
+                avons décidé d'installer le serveur BIND9 car c'est ce que préconise la documentation Ubuntu. En effet, BIND est le programme le plus couramment utilisé pour maintenir un serveur de noms
+                sous Linux. Une fois BIND9 installé, nous modifions plusieurs fichiers : le fichier named.conf.local où nous indiquons la base de donnée de résolution d'addresse et les subnets pouvant effectuer des requêtes, nous modifions le fichier named.conf.options pour encore une fois autoriser les subnets à faire des requêtes, puis nous créons et modifions le fichier db.hcl.fr où nous configurons les différentes adresses IP du serveur, du serveur mail et du
+                serveur web. Le détail des différentes configurations effectuées se trouve ci-dessous.</p>
             <button class="collapsible">Tutoriel et codes</button>
             <div class="content">
                 <h5>Installation et configuration de BIND9</h5>
                 <p>
-                    Bind9 s'installe avec la commande
+                    BIND9 s'installe avec la commande
                     <code>sudo apt install bind9</code>. Un autre package utile pour tester et résoudre les problèmes de DNS est dnsutils. Vous pouvez l'installer avec la commande
                     <code>sudo apt install dnsutils</code>. Une fois les installations terminées, les fichiers de configuration du DNS sont stockés dans le répertoire /etc/bind. Le fichier de configuration principal est /etc/bind/named.conf qui celui-ci comprend named.conf.local pour modifier vos zones et named.conf.options comprenant les options DNS globales.
                 </p>
@@ -162,10 +162,11 @@
         <section id="DHCPid" class="SousParagraphe">
             <h4>Serveur DHCP</h4>
             <p>Dans ce projet, nous devions mettre également en place un serveur DHCP. Le protocole DHCP est un service réseau permettant aux ordinateurs hôtes de se voir attribuer automatiquement et dynamiquement des adresses
-                IP. Cela va nous servir à attribuer dynamiquement des adresses IP dans chaque site HCL où nous avons deux clients. De leur côté les ordinateurs configurés pour être des clients DHCP n'ont aucun contrôle sur les paramètres
+                IP. Cela va nous servir à attribuer dynamiquement des adresses IP dans chaque site HCL où nous avons deux clients. De leur côté, les ordinateurs configurés pour être des clients DHCP n'ont aucun contrôle sur les paramètres
                 qu'ils reçoivent du serveur DHCP. Avant de pouvoir configurer le DHCP, il faut que nous attribuons une adresse IP fixe à notre serveur (164.4.1.1). Pour mettre en place le serveur DHCP, nous avons modifié le fichier dhcpd.conf
                 où nous avons déclaré les différents subnets (donc les différents sites HCL) afin que chaque client ait son adresse IP. Nous avons également modifié le fichier isc-dhcp-server afin de mettre le bon nom de l'interface utilisée.
-                Pour voir le nom de cette interface, nous entrons la commande ip a. Nous avons également configuré sur les serveurs des différents site un ip-helper pointant vers l'IP du serveur DNS afin de pouvoir faire la distribution d'IP dans les sites distants.</p>
+                Pour voir le détail des configurations, déroulez le tutoriel ci-dessous. Pour voir le nom de cette interface, nous entrons la commande <code>ip a</code>. Nous avons également configuré sur les serveurs des différents sites un <code>ip-helper</code>
+                pointant vers l'IP du serveur DNS afin de pouvoir faire la distribution d'IP dans les sites distants.</p>
             <button class="collapsible">Tutoriel et codes</button>
             <div class="content">
                 <h5>Installation et configuration du DHCP</h5>
@@ -200,7 +201,7 @@
                             <br>
                            }<br>
                     </code>
-                    Avec ces configurations, le serveur DHCP donnera aux clients une adress IP dans la plage que vous avez donné avec la commande range.
+                    Avec ces configurations, le serveur DHCP donnera aux clients une adresse IP dans la plage que vous avez donné avec la commande range.
                 </p>
                 <p>
                     Maintenant modifiez le fichier /etc/default/isc-dhcp-server pour spécifier les interfaces que dhcpd doit écouter. Mettez la configuration suivante :
@@ -219,7 +220,7 @@
         <section id="Webid" class="SousParagraphe">
             <h4>Serveur Web (Apache2)</h4>
             <p>Pour le serveur Web, nous avons décidé d'utiliser Apache. Apache est le service d'hébergement web le plus populaire. Le serveur Apache comme tous les autres serveurs web permet d'établir une connexion entre un 
-                serveur et les navugateurs des visiteurs du site web. Si nous installons que Apache, nous n'avons que le service HTTP. Pour avoir le service HTTPS donc sécurisé, il faut activer le module SSL et générer un certificat SSL
+                serveur et les navigateurs des visiteurs du site web. Si nous n'installons que Apache, nous n'avons que le service HTTP. Pour avoir le service HTTPS donc un service sécurisé, il faut activer le module SSL et générer un certificat SSL
                 autosigné grâce à Openssl afin d'activer HTTPS. Il faut également créer la configuration du site puis nous activons le site afin qu'il soit accessible sur les différents clients.</p>
             <button class="collapsible">Tutoriel et codes</button>
             <div class="content">
@@ -237,7 +238,7 @@
                     <code>sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/server.hcl.fr.key -out /etc/ssl/certs/server.hcl.fr.crt</code>
                 </p>
                 <p>
-                    Il faut à présent créer la configuration du site. Nous créons donc le fichier de configuration avec touch dans le répertoire d'apahc comme il suit :
+                    Il faut à présent créer la configuration du site. Nous créons donc le fichier de configuration avec touch dans le répertoire d'Apache comme il suit :
                     <code>sudo touch /etc/apache2/sites-available/hcl.fr-https.conf</code><br>
                     Il faut ensuite éditer le fichier et taper ce qui suit :
                     <code><br>
@@ -269,7 +270,7 @@
         <section id="Mailid" class="SousParagraphe">
             <h4>Serveur Mail (SMTP, IMAP, POP)</h4>
             <p>Pour le serveur mail, nous avons décidé d'utiliser postfix comme serveur SMTP, mailutils pour tester l'envoi de mail sur le serveur et dovecot pour le serveur IMAP/POP. Nous avons choisi postfix car c'est le MTA
-                (Mail Transfert Agent) par défaut de Ubuntu. Pour l'installation de postfix, il y a de nombreuses étapes à suivre qui sont détaillées dans le fichier de configuration. Nous avons choisi d'utiliser mailutils pour tester
+                (Mail Transfert Agent) par défaut de Ubuntu. Pour l'installation de postfix, il y a de nombreuses étapes à suivre qui sont détaillées dans le fichier de configuration ci-dessous. Nous avons choisi d'utiliser mailutils pour tester
                 l'envoi de mail sur le serveur car cette solution permet de gérer les mails sous Ubuntu en permettant de consulter les mails locaux ou d'en envoyer depuis le terminal. Enfin, nous avons choisi l'application dovecot car 
                 c'est une application d'agent de distribution des courriels MDA et qui a comme préoccupation principale la sécurité. De plus dovecot est très simple à installer.</p>
             <button class="collapsible">Tutoriel et codes</button>
@@ -277,7 +278,7 @@
                 <h5>Installation et configuration de Postfix</h5>
                 <p>
                     Postfix s'installe avec la commande
-                    <code>sudo apt install postfix</code>. Si lors de l'installation une fenêtre vous demande la configuration de postfix, effectuez la configuration imédiatement ou choisisser "No Configuration" pour y revenir plus tard. Dans le second cas, utilisez la commande
+                    <code>sudo apt install postfix</code>. Si lors de l'installation une fenêtre vous demande la configuration de postfix, effectuez la configuration imédiatement ou choisissez "No Configuration" pour y revenir plus tard. Dans le second cas, utilisez la commande
                     <code>sudo dpkg-reconfigure postfix</code>
                     pour relancer la configuration.
                 </p>
@@ -300,7 +301,7 @@
                         all</code>
                 </p>
                 <p>
-                    Editer le fichier /etc/postfix/main.cf pour ajouter et modifiez les paramètres suivants :
+                    Editez le fichier /etc/postfix/main.cf pour ajouter et modifiez les paramètres suivants :
                     <code><br>
                         mydomain = hcl.fr<br>
                         mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 164.4.0.0/22<br>
@@ -308,11 +309,11 @@
                     </code>
                 </p>
                 <p>
-                    Taper la commande :
+                    Tapez la commande :
                     <br><code>mkdir -p /etc/skel/Maildir/{cur,new,tmp}</code>
 
                 </p>
-                <p>Ajouter finalement 2 utilisateurs :<br><code>
+                <p>Ajoutez finalement 2 utilisateurs :<br><code>
                         useradd -m user1<br>
                         passwd user1pwd<br>
                         <br>
@@ -353,7 +354,7 @@
                         mail_location = maildir:~/Maildir</code>
                 </p>
                 <p>
-                    Redémarrer les service dovecot :
+                    Redémarrez les services dovecot :
                     <br><code>service dovecot restart</code>
                 </p>
                 <p>
