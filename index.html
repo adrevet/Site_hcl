@@ -373,7 +373,7 @@
         </section>
         <section id="Sambaid" class="SousParagraphe">
             <h4>Serveur de fichier (Samba)</h4>
-            <p>Enfin, pour le serveur de fichier, nous avons décidé de configurer Samba . Samba est recommandé par la documentation Ubuntu lors de l'installation de Ubuntu serveur. Le serveur de fichier
+            <p>Enfin, pour le serveur de fichier, nous avons décidé de configurer Samba. Samba est recommandé par la documentation Ubuntu lors de l'installation de Ubuntu serveur. Le serveur de fichier
                 permet de mettre en réseau les différents ordinateurs clients des HCL. Cela permet le partage de fichiers.</p>
             <button class="collapsible">Tutoriel et codes</button>
             <div class="content">
@@ -413,6 +413,21 @@
             <h4 id="NTPid">Protocole NTP</h4>
             <p>Nous avons décidé en fin de projet de mettre en place le protocole NTP afin de pouvoir synchroniser les horologes des différents systèmes informatiques. Le protocole NTP repose sur le protocole UDP et s'appuie sur le UTC
                 (Coordinated Universal Time). Le protocole NTP permet d'éviter de nombreux problèmes de connexion dans un réseau.</p>
+            <button class="collapsible">Tutoriel et codes</button>
+            <div class="content">
+                <h5>Installation et configuration de NTP</h5>
+                <p>
+                    Le service NTP s'installe avec la commande
+                    <code>sudo apt-get install ntp</code>
+                </p>
+                <p>
+                    Puis dites au routeur d'utiliser le servuer NTP comme source avec les commandes :
+                    <code><br>
+                        ntp server 164.4.1.1 prefer source fa0/0<br>
+                        ntp update-calendar
+                    </code>
+                </p>
+            </div>
         </section>
     </section>
 	<section class="Paragraphe" id="VM">
