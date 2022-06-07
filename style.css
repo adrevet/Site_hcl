@@ -85,7 +85,7 @@ menu {
     padding: 0;
 }
 
-ul {
+ul.navbar {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -208,7 +208,7 @@ li.dropdown {
 .content {
     padding: 0 18px;
     max-height: 0;
-    overflow: scroll;
+    overflow: auto;
     transition: max-height 0.2s ease-out;
     background-color: #f1f1f1;
 }
@@ -218,11 +218,18 @@ code {
     color: rgb(138, 38, 38);
     display: block;
     background: white;
-    overflow: scroll;
+    overflow: auto;
     max-width: 100%;
     padding-left: 10px;
     margin: 5px;
     border-radius: 5px;
     border: 1px;
     border-style: solid;
+}
+
+ul.classic li {
+    font-family: system-ui;
+    float: none;
+    background: white;
+    border: 0px;
 }

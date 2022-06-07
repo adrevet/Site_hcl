@@ -425,8 +425,26 @@
         <p>Durant tout ce projet, nous avons pu voir que nous pourrions améliorer notre mise en place de l'infrastructure à l'aide de plusieurs solutions de sécurité permettant de sécuriser les différents flux entre les différents
             sites. Nous aurions pu mettre en place le protocole AAA. Ce protocole permet de réaliser trois fonctions : Authentification, Autorisation et Traçabilité (en anglais Authentication, Authorization, and Accounting/Auditing).
             L'architecture AAA permet aux utilisateurs d'accéder aux périphériques en réseau qui leur ont été attribués et protège le réseau contre les accès non autorisés. Nous aurions pu également mettre en place le chiffrement des données.</p>
-        <p>Nous pourrions peut-être penser à restructurer l'infrastructure réseau afin d'avoir une infrastructure évolutive permettant de réagir facilement et rapidement contre des attaques sans impacter les performances de l'infrastructure
-            en place. Nous pouvons appliquer également une meilleure gestion du stockage des différentes données.</p>
+        <p>Malgré une architecture full-mesh, le service présente plusieurs SPOF (Single Point Of Failure) : 
+            <ul class="classic">
+                <li>Seul le routeur DC-R1 permet de sortir sur internet, et il n'a qu'un seul lien de sortie. S'il tombe alors l'ensemble de l'infrastructure ne peut plus aller sur internet. Pour régler ce problème il faudrait prévoir un second lien de sortie. De plus, il faudrait ajouter un second routeur pour mettre en place un HSRP.</li>
+                <li>Le site Lyon Sud n'a également qu'un seul routeur de sortie et sera inaccessible si HCL-R3 ou BBN-3 tombent en panne.</li>
+                <li>Un seul serveur gère tous les services. Il faudrait bien sûr les redonder sur plusieurs machines et même sur plusieurs sites.</li>
+            </ul>
+        </p>
+        <p>D'autres améliorations peuvent être apportées, notamment :
+            <ul class="classic">
+                <li>Le serveur NTP est hebergé sur une VM, ce qui n'est pas recommandé. Idéalement cette machine se doit d'être baremetal.</li>
+                <li>Le serveur de fichier devrait être répliqué et backupé.</li>
+                <li>Notre réseau n'a aucune ACL configurées, ce qui n'est pas optimal d'un niveau sécurité.</li>
+                <li>Aucune politique de mot de passe utilisateurs n'a été définie.</li>
+                <li>Nous n'avons pas eu le temps de configurer l'Active Directory.</li>
+                <li>L'ajout d'un firewall ou d'un ASA serait pertinent dans le cas de données sensibles comme c'est le cas pour les HCL.</li>
+                <li>Le chiffrement des données sur le serveur de fichier semble s'imposer, conformément aux recommendantions de l'ANSSI.</li>
+                <li>La mise en place d'un VPN intersite peut également être utile pour la sécurité des transmissions.</li>
+
+            </ul>
+        </p>
     </section>
     <section class="Paragraphe" id="Conclusion">
         <h3>Conclusion</h3>
